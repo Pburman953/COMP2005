@@ -17,6 +17,11 @@ public class maternityAPIService {
     }
 
 
+    public String fetchDataFromExternalApi(String requestExt) {
+        ApiController apiController = new ApiController(restTemplate);
+        return apiController.fetchDataFromApi(apiUrl + requestExt);
+    }
+
     /*
     public List<Admission> getAdmissionsForPatient(Long patientId) {
         String url = apiUrl + "/admissions/{patientId}";
