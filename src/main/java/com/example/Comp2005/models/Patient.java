@@ -1,10 +1,13 @@
 package com.example.Comp2005.models;
 
+import javax.validation.constraints.Size;
+
 public class Patient {
 
     private int id;
     private String surname;
     private String forename;
+    @Size(max = 10)
     private String nhsNumber;
 
 
