@@ -22,6 +22,10 @@ public class maternityAPIService {
         return apiController.fetchDataFromApi(apiUrl + requestExt);
     }
 
+
+
+
+
     /*
     public List<Admission> getAdmissionsForPatient(Long patientId) {
         String url = apiUrl + "/admissions/{patientId}";

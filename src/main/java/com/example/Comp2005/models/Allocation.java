@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Allocation {
 
     private int id;
-    private int adminId;
+    private int admissionId;
     private int employeeId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -19,12 +19,12 @@ public class Allocation {
         this.id = id;
     }
 
-    public int getAdminId() {
-        return adminId;
+    public int getAdmissionId() {
+        return admissionId;
     }
 
-    public void setAdminId(int adminId) {
-        this.adminId = adminId;
+    public void setAdmissionId(int admissionId) {
+        this.admissionId = admissionId;
     }
 
     public int getEmployeeId() {
