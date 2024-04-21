@@ -5,6 +5,7 @@ import com.example.Comp2005.models.Allocation;
 import com.example.Comp2005.models.Employee;
 import com.example.Comp2005.models.Patient;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
@@ -12,10 +13,10 @@ import java.util.List;
 
 public class JsonProcessor {
 
-    List<Admission> admissionList = new ArrayList<>();
-    List<Allocation> allocationList = new ArrayList<>();
-    List<Employee> employeeList = new ArrayList<>();
-    List<Patient> patientList = new ArrayList<>();
+    public List<Admission> admissionList = new ArrayList<>();
+    public List<Allocation> allocationList = new ArrayList<>();
+    public List<Employee> employeeList = new ArrayList<>();
+    public List<Patient> patientList = new ArrayList<>();
 
 
 
@@ -25,18 +26,32 @@ public class JsonProcessor {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
+        JsonNode jsonNode = objectMapper.readTree(json);
+
         switch(ModelName){
             case "Admission":
-                Admission Admission = objectMapper.readValue(json, Admission.class);
+                for (JsonNode node : jsonNode){
+                    Admission newAdmission = objectMapper.treeToValue(node, Admission.class);
+                    admissionList.add(newAdmission);
+                }
                 break;
             case "Allocation":
-                Allocation Allocation = objectMapper.readValue(json, Allocation.class);
+                for(JsonNode node : jsonNode){
+                    Allocation newAllocation = objectMapper.treeToValue(node, Allocation.class);
+                    allocationList.add(newAllocation);
+                }
                 break;
             case "Employee":
-                Employee Employee = objectMapper.readValue(json, Employee.class);
+                for(JsonNode node : jsonNode){
+                    Employee newEmployee = objectMapper.treeToValue(node, Employee.class);
+                    employeeList.add(newEmployee);
+                }
                 break;
             case "Patient":
-                Patient Patient = objectMapper.readValue(json, Patient.class);
+                for(JsonNode node : jsonNode){
+                    Patient newPatient = objectMapper.treeToValue(node, Patient.class);
+                    patientList.add(newPatient);
+                }
                 break;
         }
 
