@@ -89,12 +89,13 @@ public class maternityAPIService {
 
 
         for(Admission admission : newJsonProcessor.admissionList){
-
+            LocalDateTime admissionDate = LocalDateTime.parse(admission.getAdmissionDate(), DateTimeFormatter.ISO_DATE_TIME);
+            LocalDateTime dischargeDate = LocalDateTime.parse(admission.getDischargeDate(), DateTimeFormatter.ISO_DATE_TIME);
 
             // Check if discharge date is before admission date
-            boolean isNotDischarged = admission.getDischargeDate().equals("0001-01-01T00:00:00");
+            boolean isDischargeBeforeAdmission = dischargeDate.isBefore(admissionDate);
 
-            if (isNotDischarged) {
+            if (isDischargeBeforeAdmission) {
                 admittedPatientID = admission.getPatientID();
 
                 if(admittedPatientID != -1) {
