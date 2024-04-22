@@ -1,13 +1,26 @@
 package com.example.Comp2005.models;
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Employee {
 
     private int id;
     private String forename;
     private String surname;
 
-    public int getId() {
+    @JsonCreator
+    public Employee(@JsonProperty("id") int id,
+                   @JsonProperty("surname") String surname,
+                   @JsonProperty("forename") String forename) {
+        this.id = id;
+        this.surname = surname;
+        this.forename = forename;
+
+    }
+
+        public int getId() {
         return id;
     }
 

@@ -1,5 +1,8 @@
 package com.example.Comp2005.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 
 public class Allocation {
@@ -10,7 +13,19 @@ public class Allocation {
     private String startTime;
     private String endTime;
 
-
+    @JsonCreator
+    public Allocation(@JsonProperty("id") int id,
+                   @JsonProperty("admissionID") int admissionId,
+                   @JsonProperty("employeeID") int employeeId,
+                   @JsonProperty("startTime") String startTime,
+                  @JsonProperty("endTime") String endTime)
+    {
+        this.id = id;
+        this.admissionId = admissionId;
+        this.employeeId = employeeId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 
     public int getId() {
         return id;
