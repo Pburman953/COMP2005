@@ -89,13 +89,10 @@ public class maternityAPIService {
 
 
         for(Admission admission : newJsonProcessor.admissionList){
-            LocalDateTime admissionDate = LocalDateTime.parse(admission.getAdmissionDate(), DateTimeFormatter.ISO_DATE_TIME);
-            LocalDateTime dischargeDate = LocalDateTime.parse(admission.getDischargeDate(), DateTimeFormatter.ISO_DATE_TIME);
 
-            // Check if discharge date is before admission date
-            boolean isDischargeBeforeAdmission = dischargeDate.isBefore(admissionDate);
+            boolean isNotDischarged = admission.getDischargeDate().equals("0001-01-01T00:00:00");
 
-            if (isDischargeBeforeAdmission) {
+            if (isNotDischarged) {
                 admittedPatientID = admission.getPatientID();
 
                 if(admittedPatientID != -1) {
@@ -153,7 +150,35 @@ public class maternityAPIService {
         return mostAdmission_E;
     }
 
+    public List<Employee> F4() throws IOException {
+        JsonProcessor newJsonProcessor = new JsonProcessor();
+        ApiController newApiController = new ApiController(restTemplate);
 
+        String JsonTobeConverted_Al = newApiController.fetchDataFromExternalApi("/Allocations");
+        String JsonTobeConverted_E = newApiController.fetchDataFromExternalApi("/Employees");
+
+        newJsonProcessor.JsonToModelConverter( "Allocation", JsonTobeConverted_Al);
+        newJsonProcessor.JsonToModelConverter( "Employee", JsonTobeConverted_E);
+
+        List<Employee> zeroAdmissions_E = new ArrayList<>();
+
+        List<Integer> allocated_E = new ArrayList<Integer>();
+
+        for (Allocation allocation : newJsonProcessor.allocationList)
+        {
+            allocated_E.add(allocation.getEmployeeId());
+        }
+
+        for (Employee employee : newJsonProcessor.employeeList)
+        {
+            if(!allocated_E.contains(employee.getId())){
+                zeroAdmissions_E.add(employee);
+            }
+
+        }
+
+        return zeroAdmissions_E;
+    }
 
 
 }
