@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import com.example.Comp2005.JsonProcessor;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,25 +18,27 @@ public class maternityAPIService {
     private final RestTemplate restTemplate;
     private final String apiUrl; // Base URL of the external API
 
-    public maternityAPIService(RestTemplate restTemplate, @Value("${api.url}") String apiUrl) {
+    public maternityAPIService(RestTemplate restTemplate, @Value("${api.url}") String apiUrl, ApiController apiController) {
         this.restTemplate = restTemplate;
         this.apiUrl = apiUrl;
     }
 
 
-    public String fetchDataFromExternalApi(String requestExt) {
-        ApiController apiController = new ApiController(restTemplate);
-        return apiController.fetchDataFromApi(apiUrl + requestExt);
-    }
 
 
-    public List<Admission> F1(String forename, String surname) throws JsonProcessingException {
+
+    public List<Admission> F1(String forename, String surname) throws IOException {
         JsonProcessor newJsonProcessor = new JsonProcessor();
+        ApiController newApiController = new ApiController(restTemplate);
 
         List<Admission> patientsAdmissions = new ArrayList<>();
 
-        newJsonProcessor.JsonToModelConverter( "Patient", fetchDataFromExternalApi("/patients"));
-        newJsonProcessor.JsonToModelConverter( "Admission", fetchDataFromExternalApi("/admissions"));
+        String JsonTobeConverted_P = newApiController.fetchDataFromExternalApi("/Patients");
+        String JsonTobeConverted_A = newApiController.fetchDataFromExternalApi("/Admissions");
+
+
+        newJsonProcessor.JsonToModelConverter( "Patient", JsonTobeConverted_P);
+        newJsonProcessor.JsonToModelConverter( "Admission", JsonTobeConverted_A);
 
         Patient foundPatient = null;
 

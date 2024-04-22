@@ -1,12 +1,26 @@
 package com.example.Comp2005.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 
 public class Admission {
     private int id;
-    private LocalDateTime admissionDate;
-    private LocalDateTime dischargeDate;
+    private String admissionDate;
+    private String dischargeDate;
     private int patientID;
+
+    @JsonCreator
+    public Admission(@JsonProperty("id") int id,
+                     @JsonProperty("admissionDate") String admissionDate,
+                     @JsonProperty("dischargeDate") String dischargeDate,
+                     @JsonProperty("patientID") int patientID) {
+        this.id = id;
+        this.admissionDate = admissionDate;
+        this.dischargeDate = dischargeDate;
+        this.patientID = patientID;
+    }
 
     // Getters and setters
 
@@ -18,19 +32,19 @@ public class Admission {
         this.id = id;
     }
 
-    public LocalDateTime getAdmissionDate() {
+    public String getAdmissionDate() {
         return admissionDate;
     }
 
-    public void setAdmissionDate(LocalDateTime admissionDate) {
+    public void setAdmissionDate(String admissionDate) {
         this.admissionDate = admissionDate;
     }
 
-    public LocalDateTime getDischargeDate() {
+    public String getDischargeDate() {
         return dischargeDate;
     }
 
-    public void setDischargeDate(LocalDateTime dischargeDate) {
+    public void setDischargeDate(String dischargeDate) {
         this.dischargeDate = dischargeDate;
     }
 

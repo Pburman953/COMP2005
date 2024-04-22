@@ -1,5 +1,8 @@
 package com.example.Comp2005.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.Size;
 
 public class Patient {
@@ -10,6 +13,16 @@ public class Patient {
     @Size(max = 10)
     private String nhsNumber;
 
+    @JsonCreator
+    public Patient(@JsonProperty("id") int id,
+                   @JsonProperty("surname") String surname,
+                   @JsonProperty("forename") String forename,
+                   @JsonProperty("nhsNumber") String nhsNumber) {
+        this.id = id;
+        this.surname = surname;
+        this.forename = forename;
+        this.nhsNumber = nhsNumber;
+    }
 
     public int getId() {
         return id;

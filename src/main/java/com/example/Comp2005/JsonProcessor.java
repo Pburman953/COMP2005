@@ -5,6 +5,7 @@ import com.example.Comp2005.models.Allocation;
 import com.example.Comp2005.models.Employee;
 import com.example.Comp2005.models.Patient;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -22,39 +23,32 @@ public class JsonProcessor {
 
 
 
-    public void JsonToModelConverter(String ModelName, String json) throws JsonProcessingException {
 
-        ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-        JsonNode jsonNode = objectMapper.readTree(json);
-
-        switch(ModelName){
+    public void JsonToModelConverter(String modelName, String jsonString) throws JsonProcessingException {
+        switch(modelName) {
             case "Admission":
-                for (JsonNode node : jsonNode){
-                    Admission newAdmission = objectMapper.treeToValue(node, Admission.class);
-                    admissionList.add(newAdmission);
-                }
+                List<Admission> admissions = objectMapper.readValue(jsonString, new TypeReference<List<Admission>>(){});
+                admissionList.addAll(admissions);
                 break;
             case "Allocation":
-                for(JsonNode node : jsonNode){
-                    Allocation newAllocation = objectMapper.treeToValue(node, Allocation.class);
-                    allocationList.add(newAllocation);
-                }
+                List<Allocation> allocations = objectMapper.readValue(jsonString, new TypeReference<List<Allocation>>(){});
+                allocationList.addAll(allocations);
                 break;
             case "Employee":
-                for(JsonNode node : jsonNode){
-                    Employee newEmployee = objectMapper.treeToValue(node, Employee.class);
-                    employeeList.add(newEmployee);
-                }
+                List<Employee> employees = objectMapper.readValue(jsonString, new TypeReference<List<Employee>>(){});
+                employeeList.addAll(employees);
                 break;
             case "Patient":
-                for(JsonNode node : jsonNode){
-                    Patient newPatient = objectMapper.treeToValue(node, Patient.class);
-                    patientList.add(newPatient);
-                }
+                List<Patient> patients = objectMapper.readValue(jsonString, new TypeReference<List<Patient>>(){});
+                patientList.addAll(patients);
                 break;
+            default:
+                // Handle unrecognized modelName
         }
-
     }
+
+
 
 }

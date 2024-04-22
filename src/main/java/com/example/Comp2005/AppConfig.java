@@ -11,9 +11,11 @@ public class AppConfig {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-
     @Bean
-    public maternityAPIService maternityAPIService(RestTemplate restTemplate, @Value("${api.url}") String apiUrl) {
-        return new maternityAPIService(restTemplate, apiUrl);
+    public ApiController apiController(){return new ApiController(restTemplate());}
+    public String apiURL = "https://web.socem.plymouth.ac.uk/COMP2005/api";
+    @Bean
+    public maternityAPIService maternityAPIService(RestTemplate restTemplate) {
+        return new maternityAPIService(restTemplate, apiURL, apiController());
     }
 }
