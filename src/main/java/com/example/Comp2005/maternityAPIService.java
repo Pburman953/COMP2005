@@ -1,5 +1,7 @@
 package com.example.Comp2005;
 import com.example.Comp2005.models.Admission;
+import com.example.Comp2005.models.Allocation;
+import com.example.Comp2005.models.Employee;
 import com.example.Comp2005.models.Patient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
@@ -73,8 +75,6 @@ public class maternityAPIService {
     public List<Patient> F2() throws IOException {
         List<Patient> currentlyAdmitted = new ArrayList<>();
 
-
-
         JsonProcessor newJsonProcessor = new JsonProcessor();
         ApiController newApiController = new ApiController(restTemplate);
 
@@ -118,6 +118,40 @@ public class maternityAPIService {
         return currentlyAdmitted;
     }
 
+    public Employee F3() throws IOException {
+
+
+        JsonProcessor newJsonProcessor = new JsonProcessor();
+        ApiController newApiController = new ApiController(restTemplate);
+
+        String JsonTobeConverted_Al = newApiController.fetchDataFromExternalApi("/Allocations");
+        String JsonTobeConverted_E = newApiController.fetchDataFromExternalApi("/Employees");
+
+        newJsonProcessor.JsonToModelConverter( "Allocation", JsonTobeConverted_Al);
+        newJsonProcessor.JsonToModelConverter( "Employee", JsonTobeConverted_E);
+
+        Employee mostAdmission_E = null;
+        int mostAl = 0;
+        for (Employee employee : newJsonProcessor.employeeList)
+        {
+            int count = 0;
+
+            for (Allocation allocation : newJsonProcessor.allocationList)
+            {
+                if(allocation.getEmployeeId() == employee.getId()){
+                    count = count + 1;
+                }
+            }
+
+            if(mostAl < count){
+                mostAl = count;
+                mostAdmission_E = employee;
+            }
+
+        }
+
+        return mostAdmission_E;
+    }
 
 
 
