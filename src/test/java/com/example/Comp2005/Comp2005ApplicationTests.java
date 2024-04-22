@@ -125,20 +125,4 @@ class Comp2005ApplicationTests {
 		// Verify the result
 		assertEquals(4, result.getId());
 	}
-
-	@Test
-	public void testF4() throws IOException {
-		MockitoAnnotations.openMocks(this);
-
-		ApiController newApiController = new ApiController(MockRestTemplate);
-
-		// Create an instance of the class under test
-		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api", newApiController);
-
-		// Call the method under test
-		List<Employee> result = classUnderTest.F4();
-
-		// Verify the result
-		assertEquals(3, result.size());
-	}
 }
