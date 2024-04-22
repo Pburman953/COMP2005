@@ -108,7 +108,7 @@ class Comp2005ApplicationTests {
 		List<Patient> result = classUnderTest.F2();
 
 		// Verify the result
-		assertEquals(1, result.size());
+		assertEquals(2, result.size());
 	}
 	@Test
 	public void testF3() throws IOException {
