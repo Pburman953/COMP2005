@@ -1,6 +1,7 @@
 package com.example.Comp2005;
 
 import com.example.Comp2005.models.Admission;
+import com.example.Comp2005.models.Patient;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -91,5 +92,21 @@ class Comp2005ApplicationTests {
 		// Verify the result
 		assertEquals(1, result.size());
 		assertEquals(2, result.get(0).getId());
+	}
+
+	@Test
+	public void testF2() throws IOException {
+		MockitoAnnotations.openMocks(this);
+
+		ApiController newApiController = new ApiController(MockRestTemplate);
+
+		// Create an instance of the class under test
+		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api", newApiController);
+
+		// Call the method under test
+		List<Patient> result = classUnderTest.F2();
+
+		// Verify the result
+		assertEquals(1, result.size());
 	}
 }
