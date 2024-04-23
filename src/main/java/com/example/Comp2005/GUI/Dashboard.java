@@ -6,7 +6,6 @@ package com.example.Comp2005.GUI;
  */
 import com.example.Comp2005.AppConfig;
 import com.example.Comp2005.GUI.Models.ModelTable;
-import com.example.Comp2005.GuiProcessor;
 import com.example.Comp2005.maternityAPIService;
 import com.example.Comp2005.models.Admission;
 import com.example.Comp2005.models.Patient;
