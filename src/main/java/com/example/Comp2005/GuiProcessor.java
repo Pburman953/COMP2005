@@ -26,9 +26,7 @@ public class GuiProcessor {
             if(splitInput.length == 2){
                 maternityAPIService newMAS = new maternityAPIService(restTemplate, AppConfig.apiURL);
                 patientAdmissions = newMAS.F1(splitInput[0], splitInput[1]);
-                for(Admission admission : patientAdmissions){
-                    System.out.print(admission.getId());
-                }
+
             }
         }
     }

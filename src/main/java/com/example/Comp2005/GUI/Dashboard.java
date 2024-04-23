@@ -76,13 +76,11 @@ public class Dashboard extends JFrame {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER){
                     GuiProcessor newGP = new GuiProcessor(AppConfig.restTemplate());
                     newGP.searchBarInput = jTextField1.getText();
-                    System.out.print(searchBarInput);
                     try {
                         newGP.processInput(newGP.searchBarInput);
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
-                    System.out.println(newGP.patientAdmissions.size());
                 }
             }
         });
