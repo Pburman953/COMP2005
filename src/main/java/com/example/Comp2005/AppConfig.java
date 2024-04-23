@@ -8,14 +8,14 @@ import org.springframework.web.client.RestTemplate;
 public class AppConfig {
 
     @Bean
-    public RestTemplate restTemplate() {
+    public static RestTemplate restTemplate() {
         return new RestTemplate();
     }
     @Bean
     public ApiController apiController(){return new ApiController(restTemplate());}
-    public String apiURL = "https://web.socem.plymouth.ac.uk/COMP2005/api";
+    public static String apiURL = "https://web.socem.plymouth.ac.uk/COMP2005/api";
     @Bean
     public maternityAPIService maternityAPIService(RestTemplate restTemplate) {
-        return new maternityAPIService(restTemplate, apiURL, apiController());
+        return new maternityAPIService(restTemplate, apiURL);
     }
 }

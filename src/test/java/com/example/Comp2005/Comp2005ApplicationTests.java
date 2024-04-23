@@ -85,14 +85,14 @@ class Comp2005ApplicationTests {
 		ApiController newApiController = new ApiController(MockRestTemplate);
 
 		// Create an instance of the class under test
-		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api", newApiController);
+		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api");
 
 		// Call the method under test
-		List<Admission> result = classUnderTest.F1("Viv", "Robinson");
+		List<Admission> result = classUnderTest.F1("Heather", "Carter");
 
 		// Verify the result
-		assertEquals(1, result.size());
-		assertEquals(2, result.get(0).getId());
+		assertEquals(2, result.size());
+		assertEquals(1, result.get(0).getId());
 	}
 
 	@Test
@@ -102,7 +102,7 @@ class Comp2005ApplicationTests {
 		ApiController newApiController = new ApiController(MockRestTemplate);
 
 		// Create an instance of the class under test
-		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api", newApiController);
+		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api");
 
 		// Call the method under test
 		List<Patient> result = classUnderTest.F2();
@@ -117,7 +117,7 @@ class Comp2005ApplicationTests {
 		ApiController newApiController = new ApiController(MockRestTemplate);
 
 		// Create an instance of the class under test
-		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api", newApiController);
+		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api");
 
 		// Call the method under test
 		Employee result = classUnderTest.F3();
@@ -133,7 +133,7 @@ class Comp2005ApplicationTests {
 		ApiController newApiController = new ApiController(MockRestTemplate);
 
 		// Create an instance of the class under test
-		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api", newApiController);
+		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api");
 
 		// Call the method under test
 		List<Employee> result = classUnderTest.F4();

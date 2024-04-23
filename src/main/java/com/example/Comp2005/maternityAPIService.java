@@ -21,7 +21,7 @@ public class maternityAPIService {
     private final RestTemplate restTemplate;
     private final String apiUrl; // Base URL of the external API
 
-    public maternityAPIService(RestTemplate restTemplate, @Value("${api.url}") String apiUrl, ApiController apiController) {
+    public maternityAPIService(RestTemplate restTemplate, @Value("${api.url}") String apiUrl) {
         this.restTemplate = restTemplate;
         this.apiUrl = apiUrl;
     }
@@ -65,7 +65,6 @@ public class maternityAPIService {
             for (Admission admission : newJsonProcessor.admissionList) {
                 if (admission.getPatientID() == (foundPatientId)) {
                     patientsAdmissions.add(admission);
-                    break;
                 }
             }
         }
