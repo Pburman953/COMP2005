@@ -7,6 +7,10 @@ package com.example.Comp2005.GUI;
 import com.example.Comp2005.AppConfig;
 import com.example.Comp2005.GUI.Models.ModelTable;
 import com.example.Comp2005.GuiProcessor;
+import com.example.Comp2005.maternityAPIService;
+import com.example.Comp2005.models.Admission;
+import com.example.Comp2005.models.Patient;
+import org.springframework.web.client.RestTemplate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +19,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,7 +35,8 @@ public class Dashboard extends JFrame {
     /**
      * Creates new form Dashboard
      */
-    public Dashboard() {
+    public Dashboard(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
         initComponents();
     }
 
@@ -74,10 +81,16 @@ public class Dashboard extends JFrame {
             @Override
             public void keyPressed(KeyEvent e){
                 if (e.getKeyCode() == KeyEvent.VK_ENTER){
-                    GuiProcessor newGP = new GuiProcessor(AppConfig.restTemplate());
-                    newGP.searchBarInput = jTextField1.getText();
+                    //GuiProcessor newGP = new GuiProcessor(AppConfig.restTemplate());
+                    clearCellContent();
+                    searchBarInput = jTextField1.getText();
                     try {
-                        newGP.processInput(newGP.searchBarInput);
+                        processInput(searchBarInput);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    try {
+                        setCellContent_Admissions(searchBarInput);
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -159,13 +172,15 @@ public class Dashboard extends JFrame {
         jTable1.setModel(new ModelTable(
 
                 new Object [][] {
-                        {null, null, null, null},
-                        {null, null, null, null},
-                        {null, null, null, null},
-                        {null, null, null, null}
+                        {null, null, null, null,null,null},
+                        {null, null, null, null,null,null},
+                        {null, null, null, null,null,null},
+                        {null, null, null, null,null,null},
+                        {null, null, null, null,null,null},
+                        {null, null, null, null,null,null}
                 },
                 new String [] {
-                        "Title 1", "Title 2", "Title 3", "Title 4"
+                        "Admission ID","Patient ID","Patient Name","Nhs Number", "Admission Date", "Discharge Date"
                 }
 
         ));
@@ -267,7 +282,7 @@ public class Dashboard extends JFrame {
         /* Create and display the form */
         EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Dashboard().setVisible(true);
+                new Dashboard(restTemplate).setVisible(true);
             }
         });
     }
@@ -288,5 +303,107 @@ public class Dashboard extends JFrame {
 
 
     // End of variables declaration
+    // Gui Processing and Logic
+
+    private static RestTemplate restTemplate = new RestTemplate();
+
+    //public String searchBarInput;
+
+    public List<Admission> patientAdmissions = new ArrayList<>();
+
+    //public GuiProcessor(RestTemplate restTemplate) {
+        //this.restTemplate = restTemplate;
+    //}
+
+    private Patient searchedPatient;
+
+    public void processInput(String input) throws IOException {
+        if(searchBarInput != null){
+            input = input.trim();
+            String[] splitInput = input.split("\\s+");
+            if(splitInput.length == 2){
+                maternityAPIService newMAS = new maternityAPIService(restTemplate, AppConfig.apiURL);
+                patientAdmissions = newMAS.F1(splitInput[0], splitInput[1]);
+
+            }
+        }
+    }
+
+    public void clearCellContent(){
+        int rowCount = jTable1.getRowCount();
+        int colCount = jTable1.getColumnCount();
+
+        for (int row = 0; row < rowCount; row++){
+            for ( int col = 0; col < colCount; col++ ){
+                jTable1.setValueAt(null, row, col);
+            }
+        }
+    }
+
+    public void setCellContent_Admissions(String input) throws IOException {
+        int rowCount = jTable1.getRowCount();
+        int colCount = jTable1.getColumnCount();
+
+        maternityAPIService newMAS = new maternityAPIService(restTemplate, AppConfig.apiURL);
+
+        String[] splitInput = input.split("\\s+");
+
+        searchedPatient = newMAS.getPatientDetails(splitInput[0], splitInput[1]);
+
+
+        for (int row = 0; row < rowCount; row++){
+            for ( int col = 0; col < colCount; col++ ){
+                switch(col){
+                    case 0:
+                        if(row < patientAdmissions.size()){
+                            jTable1.setValueAt(patientAdmissions.get(row).getId(), row, col);
+                        }else{
+                            break;
+                        }
+                        break;
+                    case 1:
+                        if(row < patientAdmissions.size()){
+                            jTable1.setValueAt(patientAdmissions.get(row).getPatientID(), row, col);
+                        }else{
+                            break;
+                        }
+                        break;
+                    case 2:
+                        if(row < patientAdmissions.size()){
+                            jTable1.setValueAt(searchBarInput, row, col);
+                        }else{
+                            break;
+                        }
+                        break;
+                    case 3:
+                        if(row < patientAdmissions.size()){
+                            jTable1.setValueAt(searchedPatient.getNhsNumber(), row, col);
+                        }else{
+                            break;
+                        }
+                        break;
+                    case 4:
+                        if(row < patientAdmissions.size()){
+                            jTable1.setValueAt(patientAdmissions.get(row).getAdmissionDate(), row, col);
+                        }else{
+                            break;
+                        }
+                        break;
+                    case 5:
+                        if(row < patientAdmissions.size()){
+                            if(patientAdmissions.get(row).getDischargeDate() != "0001-01-01T00:00:00") {
+                                jTable1.setValueAt(patientAdmissions.get(row).getDischargeDate(), row, col);
+                            }else {
+                                jTable1.setValueAt("Not Discharged yet", row, col);
+                            }
+                        }else{
+                            break;
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
 }
 

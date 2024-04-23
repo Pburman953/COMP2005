@@ -179,6 +179,25 @@ public class maternityAPIService {
         return zeroAdmissions_E;
     }
 
+    public Patient getPatientDetails(String forename, String surname) throws IOException {
+        Patient foundPatient = null;
+
+
+        JsonProcessor newJsonProcessor = new JsonProcessor();
+        ApiController newApiController = new ApiController(restTemplate);
+
+        String JsonTobeConverted_P = newApiController.fetchDataFromExternalApi("/Patients");
+        newJsonProcessor.JsonToModelConverter( "Patient", JsonTobeConverted_P);
+
+        for (Patient patient : newJsonProcessor.patientList) {
+            if (patient.getForename().equals(forename) && patient.getSurname().equals(surname)) {
+                foundPatient = patient;
+                break;
+            }
+        }
+
+        return foundPatient;
+    }
 
 }
 
