@@ -5,6 +5,7 @@ package com.example.Comp2005.GUI;
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 import com.example.Comp2005.AppConfig;
+import com.example.Comp2005.GUI.Models.CustomTextField;
 import com.example.Comp2005.GUI.Models.ModelTable;
 import com.example.Comp2005.maternityAPIService;
 import com.example.Comp2005.models.Admission;
@@ -54,7 +55,7 @@ public class Dashboard extends JFrame {
         jPanel1 = new JPanel();
         jPanel4 = new JPanel();
         jLabel1 = new JLabel();
-        jTextField1 = new JTextField();
+        jTextField1 = new CustomTextField("Search Patient Admissions");
         jPanel5 = new JPanel();
         jButton1 = new JButton();
         jButton2 = new JButton();
@@ -75,13 +76,12 @@ public class Dashboard extends JFrame {
         jLabel1.setText("jLabel1");
 
         jTextField1.setBackground(UIManager.getDefaults().getColor("Button.default.pressedBackground"));
-        jTextField1.setText("Search Patient Admissions");
+        //jTextField1.setText("Search Patient Admissions");
         jTextField1.setPreferredSize(new Dimension(153, 45));
         jTextField1.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e){
                 if (e.getKeyCode() == KeyEvent.VK_ENTER){
-                    //GuiProcessor newGP = new GuiProcessor(AppConfig.restTemplate());
                     clearCellContent();
                     searchBarInput = jTextField1.getText();
                     try {
@@ -94,9 +94,14 @@ public class Dashboard extends JFrame {
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
+                }else{
+
                 }
             }
         });
+
+
+
 
         GroupLayout jPanel4Layout = new GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -298,9 +303,11 @@ public class Dashboard extends JFrame {
     private JPanel jPanel5;
     private JScrollPane jScrollPane1;
     private JTable jTable1;
-    private JTextField jTextField1;
+    private CustomTextField jTextField1;
     public String searchBarInput;
-
+    public JOptionPane errorPopup;
+    public int errorCode;
+    // 404 = patient not found 400 = invalid input (no input or no spaces in input or too many spaces in input) 418 = teapot lmao
 
     // End of variables declaration
     // Gui Processing and Logic
@@ -321,10 +328,19 @@ public class Dashboard extends JFrame {
         if(searchBarInput != null){
             input = input.trim();
             String[] splitInput = input.split("\\s+");
+
+            for(int p = 0; p < splitInput.length; p++){
+                if(!splitInput[p].isEmpty()){
+                    splitInput[p] = Character.toUpperCase(splitInput[p].charAt(0)) + splitInput[p].substring(1).toLowerCase();
+                }
+            }
+
             if(splitInput.length == 2){
                 maternityAPIService newMAS = new maternityAPIService(restTemplate, AppConfig.apiURL);
                 patientAdmissions = newMAS.F1(splitInput[0], splitInput[1]);
-
+            } else if (splitInput.length < 2) {
+                errorCode = 400;
+                System.out.println("Error Code: " + errorCode + "(Invalid Input)");
             }
         }
     }
@@ -340,6 +356,12 @@ public class Dashboard extends JFrame {
         }
     }
 
+
+    public void errorHandling(int errorcode){
+
+    }
+
+
     public void setCellContent_Admissions(String input) throws IOException {
         int rowCount = jTable1.getRowCount();
         int colCount = jTable1.getColumnCount();
@@ -347,6 +369,12 @@ public class Dashboard extends JFrame {
         maternityAPIService newMAS = new maternityAPIService(restTemplate, AppConfig.apiURL);
 
         String[] splitInput = input.split("\\s+");
+
+        for(int p = 0; p < splitInput.length; p++){
+            if(!splitInput[p].isEmpty()){
+                splitInput[p] = Character.toUpperCase(splitInput[p].charAt(0)) + splitInput[p].substring(1).toLowerCase();
+            }
+        }
 
         searchedPatient = newMAS.getPatientDetails(splitInput[0], splitInput[1]);
 
@@ -370,7 +398,7 @@ public class Dashboard extends JFrame {
                         break;
                     case 2:
                         if(row < patientAdmissions.size()){
-                            jTable1.setValueAt(searchBarInput, row, col);
+                            jTable1.setValueAt(searchedPatient.getForename() + " " + searchedPatient.getSurname(), row, col);
                         }else{
                             break;
                         }
