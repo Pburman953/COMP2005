@@ -20,6 +20,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -390,10 +391,12 @@ public class Dashboard extends JFrame {
                         break;
                     case 5:
                         if(row < patientAdmissions.size()){
-                            if(patientAdmissions.get(row).getDischargeDate() != "0001-01-01T00:00:00") {
-                                jTable1.setValueAt(patientAdmissions.get(row).getDischargeDate(), row, col);
-                            }else {
+                            if(Objects.equals(patientAdmissions.get(row).getDischargeDate(), "0001-01-01T00:00:00")) {
                                 jTable1.setValueAt("Not Discharged yet", row, col);
+
+                            }else {
+                                jTable1.setValueAt(patientAdmissions.get(row).getDischargeDate(), row, col);
+
                             }
                         }else{
                             break;
