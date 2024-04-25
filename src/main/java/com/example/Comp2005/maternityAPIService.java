@@ -18,6 +18,8 @@ import java.util.List;
 @Service
 public class maternityAPIService {
 
+
+    public int errorCode = 0;
     private final RestTemplate restTemplate;
     private final String apiUrl; // Base URL of the external API
 
@@ -26,9 +28,25 @@ public class maternityAPIService {
         this.apiUrl = apiUrl;
     }
 
+    public Patient getPatientDetails(String forename, String surname) throws IOException {
+        Patient foundPatient = null;
 
 
+        JsonProcessor newJsonProcessor = new JsonProcessor();
+        ApiController newApiController = new ApiController(restTemplate);
 
+        String JsonTobeConverted_P = newApiController.fetchDataFromExternalApi("/Patients");
+        newJsonProcessor.JsonToModelConverter( "Patient", JsonTobeConverted_P);
+
+        for (Patient patient : newJsonProcessor.patientList) {
+            if (patient.getForename().equals(forename) && patient.getSurname().equals(surname)) {
+                foundPatient = patient;
+                break;
+            }
+        }
+
+        return foundPatient;
+    }
 
     public List<Admission> F1(String forename, String surname) throws IOException {
         JsonProcessor newJsonProcessor = new JsonProcessor();
@@ -57,8 +75,10 @@ public class maternityAPIService {
         if (foundPatient != null) {
             foundPatientId = foundPatient.getId();
             System.out.println("Patient found with ID: " + foundPatientId);
+            errorCode = 200;
         } else {
             System.out.println("Patient with name '" + forename + "' not found.");
+            errorCode = 404;
         }
 
         if(foundPatientId != -1) {
@@ -179,25 +199,6 @@ public class maternityAPIService {
         return zeroAdmissions_E;
     }
 
-    public Patient getPatientDetails(String forename, String surname) throws IOException {
-        Patient foundPatient = null;
-
-
-        JsonProcessor newJsonProcessor = new JsonProcessor();
-        ApiController newApiController = new ApiController(restTemplate);
-
-        String JsonTobeConverted_P = newApiController.fetchDataFromExternalApi("/Patients");
-        newJsonProcessor.JsonToModelConverter( "Patient", JsonTobeConverted_P);
-
-        for (Patient patient : newJsonProcessor.patientList) {
-            if (patient.getForename().equals(forename) && patient.getSurname().equals(surname)) {
-                foundPatient = patient;
-                break;
-            }
-        }
-
-        return foundPatient;
-    }
 
 }
 

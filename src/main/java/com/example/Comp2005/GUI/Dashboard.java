@@ -305,7 +305,8 @@ public class Dashboard extends JFrame {
     public String searchBarInput;
     public JOptionPane errorPopup;
     public int errorCode;
-    // 404 = patient not found 400 = invalid input (no input or no spaces in input or too many spaces in input) 418 = teapot lmao
+    // 404 = patient not found 400 = invalid input (no input or no spaces in input or too many spaces in input)
+    // 418 = teapot lmao 200 = no error yippee
 
     // End of variables declaration
     // Gui Processing and Logic
@@ -319,8 +320,6 @@ public class Dashboard extends JFrame {
     //public GuiProcessor(RestTemplate restTemplate) {
         //this.restTemplate = restTemplate;
     //}
-
-    private Patient searchedPatient;
 
     public void processInput(String input) throws IOException {
         if(searchBarInput != null){
@@ -336,6 +335,9 @@ public class Dashboard extends JFrame {
             if(splitInput.length == 2){
                 maternityAPIService newMAS = new maternityAPIService(restTemplate, AppConfig.apiURL);
                 patientAdmissions = newMAS.F1(splitInput[0], splitInput[1]);
+                if(newMAS.errorCode > 400){
+                    errorHandling(newMAS.errorCode);
+                }
             } else if (splitInput.length < 2) {
                 errorCode = 400;
                 errorHandling(errorCode);
@@ -343,6 +345,8 @@ public class Dashboard extends JFrame {
             }
         }
     }
+
+
 
     public void clearCellContent(){
         int rowCount = jTable1.getRowCount();
@@ -355,13 +359,19 @@ public class Dashboard extends JFrame {
         }
     }
 
-
     public void errorHandling(int errorcode){
         switch(errorcode){
             case 400:
                 JOptionPane.showMessageDialog(null, "Error Code:" + errorcode +"\n" + "Please input patient name in format"+"\n" +"(forename) (surname)");
-
-
+                jTextField1.setText("");
+                break;
+            case 404:
+                JOptionPane.showMessageDialog(null, "Error Code:" + errorcode +"\n" + "Patient not found");
+                jTextField1.setText("");
+                break;
+            default:
+                System.out.println("no error, yippee");
+                break;
         }
     }
 
@@ -380,7 +390,7 @@ public class Dashboard extends JFrame {
             }
         }
 
-        searchedPatient = newMAS.getPatientDetails(splitInput[0], splitInput[1]);
+        Patient searchedPatient = newMAS.getPatientDetails(splitInput[0], splitInput[1]);
 
 
         for (int row = 0; row < rowCount; row++){
