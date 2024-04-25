@@ -88,7 +88,7 @@ public class Dashboard extends JFrame {
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
-                    if(errorCode > 399)
+                    if(errorCode < 400)
                         try {
                             setCellContent_Admissions(searchBarInput);
                         } catch (IOException ex) {
