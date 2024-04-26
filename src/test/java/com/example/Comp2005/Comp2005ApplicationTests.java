@@ -70,12 +70,7 @@ class Comp2005ApplicationTests {
 		assertEquals(responseData, result);
 	}
 
-	@Test
-	public void testF1_UNIT(){
 
-
-
-	}
 
 
 
