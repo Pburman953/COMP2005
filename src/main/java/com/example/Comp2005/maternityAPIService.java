@@ -4,6 +4,7 @@ import com.example.Comp2005.models.Allocation;
 import com.example.Comp2005.models.Employee;
 import com.example.Comp2005.models.Patient;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -88,6 +89,8 @@ public class maternityAPIService {
                 }
             }
         }
+        ObjectMapper om = new ObjectMapper();
+        System.out.print(om.writeValueAsString(patientsAdmissions));
         return patientsAdmissions;
     }
 

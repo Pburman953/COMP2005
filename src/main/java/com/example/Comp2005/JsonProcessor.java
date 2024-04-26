@@ -20,10 +20,6 @@ public class JsonProcessor {
     public List<Patient> patientList = new ArrayList<>();
 
 
-
-
-
-
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public void JsonToModelConverter(String modelName, String jsonString) throws JsonProcessingException {
