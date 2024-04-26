@@ -52,7 +52,6 @@ public class ApiController{
 
 
         connection.disconnect();
-        System.out.println(response);
         return response.toString();
     }
 }

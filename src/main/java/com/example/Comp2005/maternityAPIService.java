@@ -89,8 +89,6 @@ public class maternityAPIService {
                 }
             }
         }
-        ObjectMapper om = new ObjectMapper();
-        System.out.print(om.writeValueAsString(patientsAdmissions));
         return patientsAdmissions;
     }
 

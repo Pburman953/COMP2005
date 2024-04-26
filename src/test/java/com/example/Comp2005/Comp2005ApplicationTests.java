@@ -90,9 +90,10 @@ class Comp2005ApplicationTests {
 		when(mockAPI.fetchDataFromExternalApi("/Admissions")).thenReturn(mockResponseFromAPI_Admins);
 
 		List<Admission> result = classUnderTest.F1("Rhi", "Sharpe");
-		ObjectMapper ob = new ObjectMapper();
 
+		ObjectMapper ob = new ObjectMapper();
 		String resultAsString = ob.writeValueAsString(result);
+
 		assertEquals(expectedResult, resultAsString);
 
 	}
@@ -181,18 +182,12 @@ class Comp2005ApplicationTests {
 	public void testF2_INTEGRATION_F1_API() throws IOException {
 		MockitoAnnotations.openMocks(this);
 
-		ApiController newApiController = new ApiController(MockRestTemplate);
 
 		// Create an instance of the class under test
 		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api");
 
 		// Call the method under test
 		List<Patient> result = classUnderTest.F2();
-
-		ObjectMapper ob = new ObjectMapper();
-
-		String resultAsString = ob.writeValueAsString(result);
-		System.out.print(resultAsString);
 
 		// Verify the result
 		assertEquals(2, result.size());
@@ -201,18 +196,12 @@ class Comp2005ApplicationTests {
 	public void testF3_INTEGRATION_F1_API() throws IOException {
 		MockitoAnnotations.openMocks(this);
 
-		ApiController newApiController = new ApiController(MockRestTemplate);
 
 		// Create an instance of the class under test
 		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api");
 
 		// Call the method under test
 		Employee result = classUnderTest.F3();
-
-		ObjectMapper ob = new ObjectMapper();
-
-		String resultAsString = ob.writeValueAsString(result);
-		System.out.print(resultAsString);
 
 		// Verify the result
 		assertEquals(4, result.getId());
@@ -222,18 +211,12 @@ class Comp2005ApplicationTests {
 	public void testF4_INTEGRATION_F1_API() throws IOException {
 		MockitoAnnotations.openMocks(this);
 
-		ApiController newApiController = new ApiController(MockRestTemplate);
 
 		// Create an instance of the class under test
 		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api");
 
 		// Call the method under test
 		List<Employee> result = classUnderTest.F4();
-
-		ObjectMapper ob = new ObjectMapper();
-
-		String resultAsString = ob.writeValueAsString(result);
-		System.out.print(resultAsString);
 
 		// Verify the result
 		assertEquals(3, result.size());
