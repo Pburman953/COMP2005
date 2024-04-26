@@ -82,6 +82,7 @@ public class Dashboard extends JFrame {
             public void keyPressed(KeyEvent e){
                 if (e.getKeyCode() == KeyEvent.VK_ENTER){
                     clearCellContent();
+                    errorCode = 0;
                     searchBarInput = jTextField1.getText();
                     try {
                         processInput(searchBarInput);

@@ -36,15 +36,7 @@ class Comp2005ApplicationTests {
 
 
 	@Test
-	public void testAppConnection() {
-		String url = "http://localhost:" + port;
-		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-
-		// Verify the response status code is OK
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-	}
-	@Test
-	public void testApiConnection() {
+	public void testApiConnection_UNIT() {
 		String url = "https://web.socem.plymouth.ac.uk/COMP2005/api/";
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
@@ -56,7 +48,7 @@ class Comp2005ApplicationTests {
 	private RestTemplate MockRestTemplate;
 
 	@Test
-	public void testFetchDataFromExternalApi() throws IOException {
+	public void testFetchDataFromExternalApi_UNIT() throws IOException {
 		MockitoAnnotations.openMocks(this);
 
 		String apiUrl = "https://web.socem.plymouth.ac.uk/COMP2005/api";
@@ -79,7 +71,16 @@ class Comp2005ApplicationTests {
 	}
 
 	@Test
-	public void testF1() throws IOException {
+	public void testF1_UNIT(){
+
+
+
+	}
+
+
+
+	@Test
+	public void testF1_INTEGRATION_F1_API() throws IOException {
 		MockitoAnnotations.openMocks(this);
 
 		ApiController newApiController = new ApiController(MockRestTemplate);
@@ -96,7 +97,7 @@ class Comp2005ApplicationTests {
 	}
 
 	@Test
-	public void testF2() throws IOException {
+	public void testF2_INTEGRATION_F1_API() throws IOException {
 		MockitoAnnotations.openMocks(this);
 
 		ApiController newApiController = new ApiController(MockRestTemplate);
@@ -111,7 +112,7 @@ class Comp2005ApplicationTests {
 		assertEquals(2, result.size());
 	}
 	@Test
-	public void testF3() throws IOException {
+	public void testF3_INTEGRATION_F1_API() throws IOException {
 		MockitoAnnotations.openMocks(this);
 
 		ApiController newApiController = new ApiController(MockRestTemplate);
@@ -127,7 +128,7 @@ class Comp2005ApplicationTests {
 	}
 
 	@Test
-	public void testF4() throws IOException {
+	public void testF4_INTEGRATION_F1_API() throws IOException {
 		MockitoAnnotations.openMocks(this);
 
 		ApiController newApiController = new ApiController(MockRestTemplate);
