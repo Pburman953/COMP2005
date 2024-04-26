@@ -6,6 +6,7 @@ import com.example.Comp2005.models.Patient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -96,6 +97,48 @@ class Comp2005ApplicationTests {
 
 	}
 
+	@Test
+	public void testF2_UNIT() throws IOException{
+
+		String mockResponseFromAPI_Admins = "[{\"id\":1,\"admissionDate\":\"2020-11-28T16:45:00\",\"dischargeDate\":\"2020-11-28T23:56:00\",\"patientID\":2},{\"id\":2,\"admissionDate\":\"2020-12-07T22:14:00\",\"dischargeDate\":\"0001-01-01T00:00:00\",\"patientID\":1},{\"id\":3,\"admissionDate\":\"2021-09-23T21:50:00\",\"dischargeDate\":\"2021-09-27T09:56:00\",\"patientID\":2},{\"id\":4,\"admissionDate\":\"2024-02-23T21:50:00\",\"dischargeDate\":\"2024-09-27T09:56:00\",\"patientID\":5},{\"id\":5,\"admissionDate\":\"2024-04-12T22:55:00\",\"dischargeDate\":\"2024-04-14T11:36:00\",\"patientID\":5},{\"id\":6,\"admissionDate\":\"2024-04-19T21:50:00\",\"dischargeDate\":\"0001-01-01T00:00:00\",\"patientID\":5}]\n";
+		String mockResponseFromAPI_Patients = "[{\"id\":1,\"surname\":\"Robinson\",\"forename\":\"Viv\",\"nhsNumber\":\"1113335555\"},{\"id\":2,\"surname\":\"Carter\",\"forename\":\"Heather\",\"nhsNumber\":\"2224446666\"},{\"id\":3,\"surname\":\"Barnes\",\"forename\":\"Nicky\",\"nhsNumber\":\"6663338888\"},{\"id\":4,\"surname\":\"King\",\"forename\":\"Jacky\",\"nhsNumber\":\"7773338888\"},{\"id\":5,\"surname\":\"Sharpe\",\"forename\":\"Rhi\",\"nhsNumber\":\"6663339999\"}]\n";
+
+		String expectedResult = "[{\"id\":1,\"surname\":\"Robinson\",\"forename\":\"Viv\",\"nhsNumber\":\"1113335555\"},{\"id\":5,\"surname\":\"Sharpe\",\"forename\":\"Rhi\",\"nhsNumber\":\"6663339999\"}]";
+
+		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api");
+		ApiController mockAPI = mock(ApiController.class);
+
+		when(mockAPI.fetchDataFromExternalApi("/Patients")).thenReturn(mockResponseFromAPI_Patients);
+		when(mockAPI.fetchDataFromExternalApi("/Admissions")).thenReturn(mockResponseFromAPI_Admins);
+
+		List<Patient> result = classUnderTest.F2();
+		ObjectMapper ob = new ObjectMapper();
+
+		String resultAsString = ob.writeValueAsString(result);
+		assertEquals(expectedResult, resultAsString);
+	}
+
+	@Test
+	public void testF3_UNIT() throws IOException{
+
+		String mockResponseFromAPI_Admins = "[{\"id\":1,\"admissionDate\":\"2020-11-28T16:45:00\",\"dischargeDate\":\"2020-11-28T23:56:00\",\"patientID\":2},{\"id\":2,\"admissionDate\":\"2020-12-07T22:14:00\",\"dischargeDate\":\"0001-01-01T00:00:00\",\"patientID\":1},{\"id\":3,\"admissionDate\":\"2021-09-23T21:50:00\",\"dischargeDate\":\"2021-09-27T09:56:00\",\"patientID\":2},{\"id\":4,\"admissionDate\":\"2024-02-23T21:50:00\",\"dischargeDate\":\"2024-09-27T09:56:00\",\"patientID\":5},{\"id\":5,\"admissionDate\":\"2024-04-12T22:55:00\",\"dischargeDate\":\"2024-04-14T11:36:00\",\"patientID\":5},{\"id\":6,\"admissionDate\":\"2024-04-19T21:50:00\",\"dischargeDate\":\"0001-01-01T00:00:00\",\"patientID\":5}]\n";
+		String mockResponseFromAPI_Patients = "[{\"id\":1,\"surname\":\"Robinson\",\"forename\":\"Viv\",\"nhsNumber\":\"1113335555\"},{\"id\":2,\"surname\":\"Carter\",\"forename\":\"Heather\",\"nhsNumber\":\"2224446666\"},{\"id\":3,\"surname\":\"Barnes\",\"forename\":\"Nicky\",\"nhsNumber\":\"6663338888\"},{\"id\":4,\"surname\":\"King\",\"forename\":\"Jacky\",\"nhsNumber\":\"7773338888\"},{\"id\":5,\"surname\":\"Sharpe\",\"forename\":\"Rhi\",\"nhsNumber\":\"6663339999\"}]\n";
+
+		String expectedResult = "[{\"id\":1,\"surname\":\"Robinson\",\"forename\":\"Viv\",\"nhsNumber\":\"1113335555\"},{\"id\":5,\"surname\":\"Sharpe\",\"forename\":\"Rhi\",\"nhsNumber\":\"6663339999\"}]";
+
+		maternityAPIService classUnderTest = new maternityAPIService(MockRestTemplate, "https://web.socem.plymouth.ac.uk/COMP2005/api");
+		ApiController mockAPI = mock(ApiController.class);
+
+		when(mockAPI.fetchDataFromExternalApi("/Patients")).thenReturn(mockResponseFromAPI_Patients);
+		when(mockAPI.fetchDataFromExternalApi("/Admissions")).thenReturn(mockResponseFromAPI_Admins);
+
+		Employee result = classUnderTest.F3();
+		ObjectMapper ob = new ObjectMapper();
+
+		String resultAsString = ob.writeValueAsString(result);
+		assertEquals(expectedResult, resultAsString);
+	}
+
 
 	@Test
 	public void testF1_INTEGRATION_F1_API() throws IOException {
@@ -126,6 +169,11 @@ class Comp2005ApplicationTests {
 		// Call the method under test
 		List<Patient> result = classUnderTest.F2();
 
+		ObjectMapper ob = new ObjectMapper();
+
+		String resultAsString = ob.writeValueAsString(result);
+		System.out.print(resultAsString);
+
 		// Verify the result
 		assertEquals(2, result.size());
 	}
@@ -140,6 +188,11 @@ class Comp2005ApplicationTests {
 
 		// Call the method under test
 		Employee result = classUnderTest.F3();
+
+		ObjectMapper ob = new ObjectMapper();
+
+		String resultAsString = ob.writeValueAsString(result);
+		System.out.print(resultAsString);
 
 		// Verify the result
 		assertEquals(4, result.getId());

@@ -114,26 +114,22 @@ public class maternityAPIService {
 
             boolean isNotDischarged = admission.getDischargeDate().equals("0001-01-01T00:00:00");
 
-            if (isNotDischarged) {
-                admittedPatientID = admission.getPatientID();
+            if (isNotDischarged && admission.getPatientID() != -1) {
 
-                if(admittedPatientID != -1) {
-                    for (Patient patient : newJsonProcessor.patientList) {
-                        if (admission.getPatientID() == (admittedPatientID)) {
-                            currentlyAdmitted.add(patient);
-                            break;
-                        }
+                for (Patient patient : newJsonProcessor.patientList) {
+                    if (admission.getPatientID() == (patient.getId()) && !currentlyAdmitted.contains(patient)) {
+                        currentlyAdmitted.add(patient);
                     }
                 }
 
             }
         }
-
+/*
         for(Patient patient : currentlyAdmitted)
         {
             System.out.println(patient.getId());
         }
-
+*/
         return currentlyAdmitted;
     }
 
