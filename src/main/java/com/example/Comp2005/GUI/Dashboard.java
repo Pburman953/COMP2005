@@ -89,7 +89,10 @@ public class Dashboard extends JFrame {
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
-                    if(errorCode < 400)
+                    if(patientAdmissions.isEmpty()){
+                        JOptionPane.showMessageDialog(null, "Patient has no admissions");
+                    }
+                    if (errorCode < 400)
                         try {
                             setCellContent_Admissions(searchBarInput);
                         } catch (IOException ex) {

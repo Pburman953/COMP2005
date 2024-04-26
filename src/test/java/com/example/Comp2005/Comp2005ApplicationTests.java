@@ -191,6 +191,9 @@ class Comp2005ApplicationTests {
 
 		// Verify the result
 		assertEquals(2, result.size());
+		assertEquals(1, result.get(0).getId());
+		assertEquals(5, result.get(1).getId());
+
 	}
 	@Test
 	public void testF3_INTEGRATION_F1_API() throws IOException {
@@ -220,5 +223,9 @@ class Comp2005ApplicationTests {
 
 		// Verify the result
 		assertEquals(3, result.size());
+		assertEquals(1,result.get(0).getId());
+		assertEquals(2,result.get(1).getId());
+		assertEquals(5,result.get(2).getId());
+
 	}
 }
